@@ -1,4 +1,5 @@
-var planner = $('.container');
+var planner = $('#schedule');
+var hours = $('.timeOfDay');
 
 // Get current date and time and display it on the page
 function postDate()
@@ -12,10 +13,14 @@ function postDate()
 
 function renderTimeBlocks()
 {
-    var block = $("<div class='row justify-content-center'></div>");
-
-    planner.append(block);
+    var saveBtn = $("<button type=\"button\" class=\"saveBtn fa fa-lock\"/>");
+    var text = $("<textarea class=\"row\"/>")
+    var time = $("<div class=\"hour\">9am</div>")
+    
+    text.insertBefore(hours);
+    saveBtn.insertBefore(hours);
+    hours.append(time);
 }
 
 postDate();
-renderTimeBlocks();
+//renderTimeBlocks();
