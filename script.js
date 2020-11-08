@@ -1,5 +1,5 @@
 var planner = $('#schedule');
-var hours = $('.timeOfDay');
+var savBtn = $('.saveBtn');
 
 // Get current date and time and display it on the page
 function postDate()
@@ -13,14 +13,43 @@ function postDate()
 
 function renderTimeBlocks()
 {
-    var saveBtn = $("<button type=\"button\" class=\"saveBtn fa fa-lock\"/>");
-    var text = $("<textarea class=\"row\"/>")
-    var time = $("<div class=\"hour\">9am</div>")
-    
-    text.insertBefore(hours);
-    saveBtn.insertBefore(hours);
-    hours.append(time);
+    var hour = new Date().getHours();
+    console.log(hour);
+
+    $("textarea", (planner)).each( function()
+    {
+        var input = $(this);
+
+        if(localStorage.getItem(input.attr("data-hr")))
+        {
+            input.val(localStorage.getItem(input.attr("data-hr")));
+        }
+
+        if((input.attr("data-hr")) === hour 
+        || ((input.attr("data-hr")) - 12) === hour)
+        {
+            input.removeClass("past").addClass("present");
+        }
+
+        if((input.attr("data-hr")) > hour 
+        || ((input.attr("data-hr")) - 12) > hour)
+        {
+            input.removeClass("past").addClass("future");
+        }
+    });
 }
 
+savBtn.on("click", function (event)
+{
+    var timeBlock = $(this).siblings("textarea");
+    var hr = timeBlock.attr("data-hr");
+    var event = timeBlock.val();
+
+    if(event)
+    {
+        localStorage.setItem(hr, event);
+    }
+});
+
 postDate();
-//renderTimeBlocks();
+renderTimeBlocks();
